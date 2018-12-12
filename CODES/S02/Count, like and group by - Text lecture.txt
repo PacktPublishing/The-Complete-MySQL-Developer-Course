@@ -1,0 +1,32 @@
+Count, like and group by - Text lecture
+Section 2, Lecture 29
+Count can be used as follows:
+
+SELECT COUNT(*) AS cnt
+FROM movies;
+
+This will return the number of movies in the table
+
+Try the following to get the number of movies for each rating and you'll get incorrect results:
+SELECT RATING
+      ,COUNT(*) AS cnt
+FROM movies;
+*Incorrect Results
+
+You can use GROUP BY (column name) to get correct results in such cases:
+SELECT RATING
+      ,COUNT(*) AS MOVIES
+FROM movies
+GROUP BY RATING;
+
+Like is used all the time for search when an entire description is not known, it's used with a % -> LIKE %
+SELECT *
+FROM movies
+WHERE TITLE like 'Night at the Museum%';
+
+Name the return columns with spaces using:
+SELECT COUNT(*) AS "Night at the Museum Movies"
+FROM movies
+WHERE TITLE like 'Night at the Museum%';
+
+You can put % before the word as well so like '%Museum%' and it will return all results that have museum in the title

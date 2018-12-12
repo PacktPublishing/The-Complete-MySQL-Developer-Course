@@ -1,0 +1,67 @@
+Create action - Text lecture
+Section 7, Lecture 105
+Create a new file titled CreateToDo.php, this will be our form to create new to-do's from the browser
+<HTML>
+  <HEAD>
+    <TITLE>CreateToDo</TITLE>
+    <META http-equiv=Content-Type content="text/html; charset=utf-8">
+    <script type="text/javascript"> 
+      function validateForm(){
+        //this is just a placeholder incase we wanted add additional javascript type validations.
+        return true;
+      };             
+    </script>
+  </HEAD> 
+  <BODY>
+    <h1>New To-do</h1>
+      <form action="CreateToDoSubmit.php" method="POST" onsubmit='return validateForm()' />
+        <p>To-do Title:  <input type="text" name="ToDoTitle" maxlength='50' required/></p>
+        <p>To-Due Date:  <input type="date" name="ToDueDate"></p>
+        <p>Description:<br> <textarea cols="100" rows="5" name="ToDoDescription" maxlength='1000' required>      </textarea></p>  
+        <input type="submit">       
+      </form>
+  </BODY>
+</HTML>
+
+Test it out by visiting the page.
+
+Now that we are using an html form to collect the data, it will submit it to another file we need to create called CreateToDoSubmit.php
+
+Create the file CreateToDoSubmit.php
+
+This file will receive the data from the html form and insert it into the database and then return the user back to the ToDoApp.php page
+
+Insert the following into CreateToDoSubmit.php
+
+<?php
+include('SQLFunctions.php');
+
+if ( !empty($_POST)) {
+  // Store data from html form POST action into variables
+  $tdTitle = $_POST['ToDoTitle'];
+  $tdDate  = $_POST['ToDueDate'];
+  $tdDescr = $_POST['ToDoDescription'];
+         
+/*Open the database connection based on config.php file settings*/
+  $link = connectDB();
+
+  /*Prepare the SQL INSERT Statement*/
+  $sql = "INSERT INTO ToDos (ToDoTitle, ToDoDescription, ToDueDate, EntryTS) VALUES ('".$tdTitle."','".$tdDescr."','".$tdDate."', NOW());";
+  /*Insert values into the database*/
+  if (mysqli_query($link, $sql)) {
+  /*    echo "<br>New record created successfully";*/
+  } else {
+      echo  "<br>Error: " . $sql . "<br>" . mysqli_error($link);
+  }
+
+/*Close database connection*/
+mysqli_close ( $link );
+
+/*Forward User Back to Main View*/  
+header("Location: ToDoApp.php");
+
+}
+
+?>
+
+Test this out, it should insert rows into the ToDo table, and then reroute the user to the ToDoApp.php

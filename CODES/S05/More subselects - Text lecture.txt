@@ -1,0 +1,45 @@
+More subselects - Text lecture
+Section 5, Lecture 75
+SUBSELECTS are also useful when you want to refer to a table but don’t plan on returning results from that additional table.
+
+Let’s try to pull a list of people who have directed movies, but we don’t care to display anything from the movies.
+
+SELECT A.FIRST_NAME
+      ,A.LAST_NAME
+FROM people A
+WHERE EXISTS (SELECT 1
+              FROM movies Z
+              WHERE Z.Director = A.ActorID) 
+GROUP BY A.FIRST_NAME
+        ,A.LAST_NAME;  
+
+Notice that they SELECT is set to return 1.  You need to have a select statement, but there is no point in specifying anything there as it will not be used.
+
+Another alternative to accomplish the same thing is using IN.  The statement Z.Director = A.ActorID is removed and replaced by putting 1 and only one column in the SELECT statement (Z.Director) and replacing ‘EXISTS’ with ‘A.ActorID IN’
+SELECT A.FIRST_NAME
+      ,A.LAST_NAME
+FROM people A
+WHERE A.ActorID IN (SELECT Z.Director
+                    FROM movies Z) 
+GROUP BY A.FIRST_NAME
+        ,A.LAST_NAME;  
+
+We can use NOT to find anyone on the People table who has never directed a movie
+SELECT A.FIRST_NAME
+      ,A.LAST_NAME
+FROM people A
+WHERE NOT EXISTS (SELECT 1
+                  FROM movies Z
+                  WHERE Z.Director = A.ActorID) 
+GROUP BY A.FIRST_NAME
+        ,A.LAST_NAME; 
+
+Similarly, we can use NOT IN to find the same information:
+
+SELECT A.FIRST_NAME
+      ,A.LAST_NAME
+FROM people A
+WHERE A.ActorID NOT IN (SELECT Z.Director
+                        FROM movies Z) 
+GROUP BY A.FIRST_NAME
+        ,A.LAST_NAME; 

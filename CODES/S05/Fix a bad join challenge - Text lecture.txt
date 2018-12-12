@@ -1,0 +1,24 @@
+Fix a bad join challenge - Text lecture
+Section 5, Lecture 71
+You have been given the following query to produce the selected columns but the join is not working correctly. Run the following query and then fix it:
+SELECT A.FNAME
+      ,A.dob
+      ,B.Game1
+      ,B.Game2
+      ,B.Game3
+      ,B.Game4
+FROM Friends A
+    ,bowlers B;
+
+Solution:
+Pick any join you want, but for my example, we will use INNER. Also, depending on which order you put the same fiends in, you can’t rely on the bowlerID and FriendID matching so I joined on names. If none of your friends and bowlers match up, insert a few friends that do.
+SELECT A.FNAME
+      ,A.dob
+      ,B.Game1
+      ,B.Game2
+      ,B.Game3
+      ,B.Game4
+FROM Friends A
+     INNER JOIN bowlers B
+       ON A.FNAME = B.FNAME
+       AND A.LNAME = B.LNAME;

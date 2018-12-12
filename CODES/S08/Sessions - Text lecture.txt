@@ -1,0 +1,61 @@
+Sessions - Text lecture
+Section 8, Lecture 121
+First, let's create a new page titled session.php
+
+This page will load at the beginning of the other pages. It will redirect users to the login page if they haven’t yet authenticated.
+<?php  
+session_start();
+
+if(!isset($_SESSION['user_id']))
+{
+    /* Redirect If Not Logged In */
+    header("Location: Login.php");
+    exit; /* prevent other code from being executed*/
+} else {
+  /*we are going to start tracking a new session variable we will call timeout.
+   by comparing the session timeout plus 600 seconds to the current time, 
+   we can force users to the logout page when they attempt to access the page, after 10 mins of inaction*/
+  if ($_SESSION['timeout'] + 10 * 60 < time()) {
+    /* session timed out */
+    header("Location: Logout.php");
+  } else {
+    /*if the user isn't timed out, update the session timeout variable to the current time.*/
+     $_SESSION['timeout'] = time();
+  }
+}
+?>
+<!-- The following navigation links are for convenience  -->
+<div align="right">
+  <a href="ToDoApp.php">Home</a>
+  <a href="AddUser.php">New User</a>
+  <a href="Login.php">Log On</a>
+  <a href="Logout.php">Log Off</a>
+  <a href="TestLoginStatus.php">Test Login Status</a>
+</div> 
+
+The timeout we are enforcing is for 10 mins (10*60), you will want to change this to one min when testing.
+
+Add The following code to the beginning of each for the following php pages:
+<?php      
+include('session.php');
+?>
+
+AddUser.php
+AddUserSubmit.php
+CreateToDo.php
+CreateToDoSubmit.php
+DeleteToDo.php
+Logout.php
+TestLoginStatus.php
+ToDoApp.php
+UpdateToDo.php
+UpdateToDoCommit.php
+
+Do not add to Login.php, we wouldn't want to be redirected prior to completing the login action.
+
+Now that we have implemented logins for multiple users, we should make sure users see their own todo list and not other's items.
+Let's accomplish this by adding an additional column in the ToDos table for User_ID (foreign key):
+ALTER TABLE ToDos
+ADD COLUMN User_ID INT AFTER ToDoID;                 
+
+Then in the CreateToDoSubmit.php page, let's add the additional column

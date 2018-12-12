@@ -1,0 +1,33 @@
+Concat and substring - Text lecture
+Section 2, Lecture 18
+CONCAT - Use to add columns together for display
+
+SELECT CONCAT(LAST_NAME, ', ', FIRST_NAME)
+FROM actors;    
+
+Returns same number of rows, but with our calculated row.
+
+SQL lets you rename columns for display as well:
+SELECT CONCAT(LAST_NAME, ', ', FIRST_NAME) AS ACTOR_NAME
+FROM actors;      
+
+To grab certain data from the rows under a column (instead of all the data) you can use substring:
+SELECT LAST_NAME, SUBSTRING(LAST_NAME,1,3)
+FROM actors;  
+
+A useful query to generate user name from first_name and last_name columns:
+SELECT FIRST_NAME
+      ,LAST_NAME
+      ,SUBSTRING(FIRST_NAME,1,1)
+      ,CONCAT(SUBSTRING(FIRST_NAME,1,1),LAST_NAME) AS USER_NAME
+FROM actors;  
+
+Select allows you to name columns with spaces using “”, you can create new columns, and calculate columns.  You can reuse columns for basically anything.
+
+SELECT CONCAT(LAST_NAME, ', ', FIRST_NAME) AS "Actor's Names"
+      ,LAST_NAME AS LNAME
+      ,FIRST_NAME AS "First Name"
+      ,CONCAT(SUBSTRING(FIRST_NAME,1,1),LAST_NAME) AS USER_NAME
+      ,'Any Text' AS Anything
+      ,1+2        AS Math
+FROM actors;

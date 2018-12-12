@@ -1,0 +1,10 @@
+Primary and foreign keys - Text lecture
+Section 5, Lecture 59
+Primary Keys and Foreign Keys 
+
+While not always, most tables use Primary Keys to uniquely identify each row. In our exercises, we’ve had an auto incrementing integer that keeps the rows unique. Think about what would happen if you had lots of rows that were identical, how do you keep them separate or unique to identify them? Understanding keys is essential when we start exploring joining tables.
+A primary key keeps every row unique. If you were going to join two tables together, you can use the primary key from one table to reference another
+
+In the examples in the video, we have 2 tables. Persons and Movies. Each has an integer as their primary key. Notice that the Persons Table uses the Primary key from Movies in the Favorite Movie column. This is an example of a foreign key. The Favorite Movie column contains they key of another table. Notice that rows in the Movies table can be referenced several times or not at all. 
+
+Another example in the video is another table ‘MoviesPeopleHaveSeen’. Both PersonID and MovieID are foreign keys, but together they make the primary key of this table. This means, no two rows can have the exact same PersonID and MovieID combination. Setting up tables like this allows us to have details about the movie and details about the people recorded only once. If a detail about a move changes, we change it on the movies table in one place which saves space and simplifies updates, otherwise we would have to update every table that had movies in them. 

@@ -1,0 +1,16 @@
+Or - Text lecture
+Section 3, Lecture 41
+OR Will allow you to have distinct conditions that may otherwise conflict
+
+example:
+SELECT *
+FROM movies
+WHERE RATING = "R" 
+  OR Title LIKE "Zoo%";
+
+Both of these accomplish the same thing but ()s and spacing help avoid mistakes. 
+
+SELECT *
+FROM movies
+WHERE ( RATING = "R" 
+        OR Title LIKE "Zoo%");

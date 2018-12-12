@@ -1,0 +1,90 @@
+Text solution to final project on birthday reporting
+Section 3, Lecture 51
+Section 3 final project!
+
+Create a table with your four best friends first names, last names and their birthdays.
+Create a report which will return the following:
+1. First and last name together in one column
+2. Current Age
+3. Create a column - if birthday is today, return ‘Call Today’, else if birthday is less than 14 days, display ‘Send Card”, else display Birthday is in (name of month).
+4. Only return friends that are within the next 6 months.
+5. Test your report by replacing current date with various hard coded dates.
+
+First create the table and fill in data:
+CREATE TABLE Friends (FriendID INT NOT NULL AUTO_INCREMENT
+                     ,FNAME varchar(50) DEFAULT NULL
+                     ,LNAME varchar(50) DEFAULT NULL
+                     ,dob date DEFAULT NULL 
+                     ,PRIMARY KEY (FriendID));   
+
+INSERT INTO Friends (FNAME, LNAME,dob)
+VALUES ('Mashrur', 'Hossain','1982-12-01')
+      ,('Matt', 'Berstein','1980-08-05')
+      ,('Anastasia', 'Ivanov','1989-04-01')
+      ,('Mark', 'Futre','1989-07-04');
+
+SELECT *
+FROM Friends;
+
+Its best to build these in phases. Return the individual parts before you incorporate them into case statements
+SELECT CONCAT(FNAME,' ',LNAME)  AS Friend
+      ,TIMESTAMPDIFF(YEAR,dob,CURDATE()) AS AGE
+      ,dob
+      ,CURDATE()
+      ,STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR(CURDATE())),'%m/%d/%Y') AS BDAY_THIS_YR
+      ,DATE_ADD( STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR(CURDATE())),'%m/%d/%Y'), INTERVAL 1 YEAR ) AS BDAY_NEXT_YR
+      ,DATE_ADD(CURDATE(), INTERVAL 6 MONTH) AS 6Months
+      ,MONTHNAME(dob) AS "Birth Month"
+FROM Friends
+WHERE CASE 
+         WHEN STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR(CURDATE())),'%m/%d/%Y') >= CURDATE()
+           THEN STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR(CURDATE())),'%m/%d/%Y')
+         ELSE DATE_ADD( STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR(CURDATE())),'%m/%d/%Y'), INTERVAL 1 YEAR )
+       END BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 6 MONTH)
+       ;
+
+Now let's add in an update:
+SELECT CONCAT(FNAME,' ',LNAME)  AS Friend
+      ,TIMESTAMPDIFF(YEAR,dob,CURDATE()) AS AGE
+      ,CASE
+         WHEN STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR(CURDATE())),'%m/%d/%Y') = CURDATE()
+           THEN 'Call Today'
+         WHEN CASE 
+                WHEN STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR(CURDATE())),'%m/%d/%Y') >= CURDATE()
+                  THEN STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR(CURDATE())),'%m/%d/%Y')
+                ELSE DATE_ADD( STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR(CURDATE())),'%m/%d/%Y'), INTERVAL 1 YEAR )
+              END <= DATE_ADD(CURDATE(), INTERVAL 14 DAY)  
+           THEN 'Send a card'
+         ELSE concat('Birthday is in ',MONTHNAME(dob))
+       END AS ToDo
+FROM Friends
+WHERE CASE 
+         WHEN STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR(CURDATE())),'%m/%d/%Y') >= CURDATE()
+           THEN STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR(CURDATE())),'%m/%d/%Y')
+         ELSE DATE_ADD( STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR(CURDATE())),'%m/%d/%Y'), INTERVAL 1 YEAR )
+       END BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 6 MONTH)
+       ;
+
+That's it! now let's test it with hardcoding different dates:
+Find and replace works wonders.
+
+SELECT CONCAT(FNAME,' ',LNAME)  AS Friend
+      ,TIMESTAMPDIFF(YEAR,dob,'2016-08-05') AS AGE
+      ,CASE
+         WHEN STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR('2016-08-05')),'%m/%d/%Y') = '2016-08-05'
+           THEN 'Call Today'
+         WHEN CASE 
+                WHEN STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR('2016-08-05')),'%m/%d/%Y') >= '2016-08-05'
+                  THEN STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR('2016-08-05')),'%m/%d/%Y')
+                ELSE DATE_ADD( STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR('2016-08-05')),'%m/%d/%Y'), INTERVAL 1 YEAR )
+              END <= DATE_ADD('2016-08-05', INTERVAL 14 DAY)  
+           THEN 'Send a card'
+         ELSE concat('Birthday is in ',MONTHNAME(dob))
+       END AS ToDo
+FROM Friends
+WHERE CASE 
+         WHEN STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR('2016-08-05')),'%m/%d/%Y') >= '2016-08-05'
+           THEN STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR('2016-08-05')),'%m/%d/%Y')
+         ELSE DATE_ADD( STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR('2016-08-05')),'%m/%d/%Y'), INTERVAL 1 YEAR )
+       END BETWEEN '2016-08-05' AND DATE_ADD('2016-08-05', INTERVAL 6 MONTH)
+       ;

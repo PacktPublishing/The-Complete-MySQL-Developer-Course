@@ -1,0 +1,22 @@
+Data types in MySQL - Text lecture
+Section 3, Lecture 35
+https://en.wikipedia.org/wiki/SQL#Data_types
+
+Each column has a data type. They define what type of data is allowed in each field. Understanding them unlocks tons of functions and features and avoids pitfalls that cause a lot of heartache. These can be slightly different between SQL environments, but they all accomplish the same things.
+
+VARCHAR(n) where N is the maximum length of the string (65,535 characters)
+CHAR(n) fixed length of the string regardless of contents. It will be padded with spaces. Anything longer than a few characters should be a VARCHAR as it generally takes up less space in the database.
+
+Read more: http://dev.mysql.com/doc/refman/5.7/en/char.html
+
+Each data type has a different size and takes different amounts of time to process.  Strings are handy in that they don't care what they are holding, dates, numbers, true/false, but a database that relies on strings when they could use other data types are bigger, slower, inefficient and miss out on all of the features built into MySQL.
+
+Date - no consideration of time.  Usually not the one you pick.
+Time - also not the one you usually want because of how limited it is.  Think of how you might handle midnight
+Timestamp - likely always the one you want to define.  
+
+Int - Integer is plus or minus -2,147,483,648 so it can handle basically anything. There are other types, but int is usually good enough in most cases.
+
+Boolean -  unlike other database environments, MySQL doesn’t currently have a boolean (True/False). Instead we use tinyint(1).  When creating a table, you can use “boolean”, and MySQL will use tinyint(1) instead.  0 = “False”, and 1=”True”.
+
+Decimal - Exact Values like money and measurements.  Decimals are defined as follows DECIMAL(A,B) where A is the total number of digits, and B is the number of digtis after the period.  For example DECIMAL(5,2) could handle anything from -999.99 to 999.99.  It could not handle 1000, or 123.456.

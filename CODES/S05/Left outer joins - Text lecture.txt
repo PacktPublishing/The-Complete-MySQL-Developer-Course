@@ -1,0 +1,49 @@
+Left outer joins - Text lecture
+Section 5, Lecture 69
+Let's say we want to report all of the actors and the movies that they directed:
+
+SELECT A.FIRST_NAME
+      ,A.LAST_NAME
+      ,B.TITLE AS Directed
+      ,B.RELEASE_YEAR
+FROM people A
+      INNER JOIN movies B
+        ON B.DIRECTOR = A.ActorID;
+
+If I want to have rows from the people table returned whether or not they directed a movie, I can use a left outer join:
+
+SELECT A.FIRST_NAME
+      ,A.LAST_NAME
+      ,B.TITLE AS Directed
+      ,B.RELEASE_YEAR
+FROM people A
+      LEFT OUTER JOIN movies B
+        ON B.DIRECTOR = A.ActorID;
+
+We can couple this concept with functions we discussed earlier like Min and Max
+
+SELECT A.FIRST_NAME
+      ,A.LAST_NAME
+      ,MIN(C.RELEASE_YEAR) AS FirstDirected
+      ,MAX(B.RELEASE_YEAR) AS LatestRelease
+FROM people A
+     LEFT OUTER JOIN movies B
+      ON B.DIRECTOR = A.ActorID
+     LEFT OUTER JOIN movies C
+      ON C.DIRECTOR = A.ActorID
+GROUP BY A.FIRST_NAME ,A.LAST_NAME
+ORDER BY COUNT(B.MovieID) DESC;
+
+When your joining tables, you can join them to the primary table or any table, but it is important to keep them in a logical order so that you can troubleshoot if you run into unexpected results.
+
+SELECT A.FIRST_NAME
+      ,A.LAST_NAME
+      ,IFNULL(MIN(C.ReleaseYear),'N/A') AS FirstDirected
+      ,IFNULL(MAX(B.ReleaseYear),'N/A') AS LatestRelease
+FROM people A
+      LEFT OUTER JOIN movies B
+       ON B.director = A.ActorID
+      LEFT OUTER JOIN movies C
+       ON C.director = B.director   
+GROUP BY A.FIRST_NAME
+        ,A.LAST_NAME;

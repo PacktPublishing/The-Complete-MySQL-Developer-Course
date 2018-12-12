@@ -1,0 +1,53 @@
+Delete action - Text lecture
+Section 7, Lecture 111
+Delete ->
+
+Create a new field titled DeleteToDo.php
+This file will take the input from a POST, and delete the corresponding ToDo row.
+<?php
+  include('SQLFunctions.php');
+
+/*if anything is in the Post, assign the $tdID variable with the ID from the post*/
+if ( !empty($_POST)) {
+  $tdID = $_POST['q'];
+   /*Open the database connection based on config.php file settings*/
+  $link = connectDB();
+
+  /*Prepare the SQL Delete Statement using the ID from the POST*/
+  $sql = "DELETE
+          FROM ToDos
+          WHERE ToDoId = ".$tdID.";";
+  echo "sql:".$sql." Comment this out after testing"; 
+  
+  /*Attempt Delete*/
+  if (mysqli_query($link, $sql)) {
+      echo "<br>Delete record successfully";
+  } else {
+      echo  "<br>Error: " . $sql . "<br>" . mysqli_error($link);
+  }
+
+/*Close database connection*/
+mysqli_close ( $link );
+
+/*Forwared User Back to Main View*/ 
+/*header("Location: ToDoApp.php");  uncomment this after testing*/
+}
+?>
+
+To Test it, we will need to update ToDoApp.php
+Update the while statement on ToDoApp.php and add a delete button under update, ensure you've moved the </td> to the end of the delete button from the update
+      while ($row = mysqli_fetch_array($result))  {
+        echo "<tr>";
+          echo "<td>{$row[0]}</td>";
+          echo "<td>{$row[1]}</td>";
+          echo "<td>{$row[2]}</td>";
+          echo "<td><form action='UpdateToDo.php' method = '_POST' onsubmit='' /> <input type='hidden' name='q' value='".$row[3]."' /><input type='Submit' value='Update'></form>";
+          echo "<form action='DeleteToDo.php' method = '_POST' onsubmit='' /> <input type='hidden' name='q' value='".$row[3]."' /><input type='Submit' value='Delete'></form></td>";
+        echo "</tr>";
+      } 
+
+Now test it out.  You will quickly find that you can delete rows with the touch of a button.
+
+Once tested, Update the DeleteToDo.php
+Comment out the echo sql
+Uncomment the header Location ToDoApp.php at the end. Test out the functions of the ToDo app and enjoy!

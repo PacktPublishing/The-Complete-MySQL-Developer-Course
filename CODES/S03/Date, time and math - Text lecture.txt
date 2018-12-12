@@ -1,0 +1,49 @@
+Date, time and math - Text lecture
+Section 3, Lecture 49
+Let’s do some math with dates
+Start with a table
+CREATE TABLE person (personID INT NOT NULL AUTO_INCREMENT
+                    ,FNAME varchar(50) DEFAULT NULL
+                    ,LNAME varchar(50) DEFAULT NULL
+                    ,dob date DEFAULT NULL 
+                    ,PRIMARY KEY (personID)); 
+
+Insert a couple of rows
+INSERT INTO person (FNAME, LNAME,dob)
+VALUES ('Mashrur', 'Hossain','1981-12-25')
+      ,('Mark', 'Futre','1985-01-03');
+
+Let’s find ages, so we start with
+SELECT dob AS Birthdays
+      ,CURDATE()   AS Today
+FROM person;
+
+MySQL needs to know that you want to do date math and not just regular math.  There are rules for dates like 12 months in a year, and leap years and days in a week. We need to use date specific functions to apply these rules like TIMESTAMPDIFF()
+
+SELECT dob AS "Birthday"
+      ,CURDATE()   AS Today
+      ,TIMESTAMPDIFF(YEAR,dob,CURDATE()) AS AGE
+FROM person;    
+
+Let’s find when when the next birthday will be.  In this case we are taking the year only from the current date, attaching it to the month/day of the dob and displaying it as 'Birthday This Year'. Similarly, we are taking the current date, adding a year, and then attaching the dob month/day to calculate what the dob will be next year. The issue is we don’t know if it already happened this year or if it’s going to take place next year.
+
+First let's start with printing out birthday this year and birthday next year
+SELECT FNAME
+      ,dob AS Birthday
+      ,CURDATE()   AS Today
+      ,STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR(CURDATE())),'%m/%d/%Y') AS "Birthday This Year"
+      ,DATE_ADD( STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR(CURDATE())),'%m/%d/%Y'), INTERVAL 1 YEAR ) AS "Birthday Next Year"
+FROM person;
+
+Now, we can use a CASE Statement to help decide which birthday to use:
+SELECT FNAME
+      ,dob AS Birthday
+      ,CURDATE()   AS Today
+      ,STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR(CURDATE())),'%m/%d/%Y') AS "Birthday This Year"
+      ,DATE_ADD( STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR(CURDATE())),'%m/%d/%Y'), INTERVAL 1 YEAR ) AS "Birthday Next Year"
+      ,CASE 
+         WHEN STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR(CURDATE())),'%m/%d/%Y') >= CURDATE()
+           THEN STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR(CURDATE())),'%m/%d/%Y')
+         ELSE DATE_ADD( STR_TO_DATE(CONCAT(MONTH(dob),'/',DAY(dob),'/',YEAR(CURDATE())),'%m/%d/%Y'), INTERVAL 1 YEAR )
+       END AS "Next Birthday"
+FROM person;

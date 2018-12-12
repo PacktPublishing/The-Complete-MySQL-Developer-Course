@@ -1,0 +1,67 @@
+Inner, Left, Outer and Right joins - Text lecture
+Section 5, Lecture 67
+Before we go any further with Joins, let's get the main types straight: INNER, LEFT OUTER, RIGHT OUTER and FULL OUTER.  
+
+There are a few ways to specify these types in SQL, but for the purposes of this course, we will stick to these terms: LEFT OUTER JOIN is often called a LEFT JOIN, and an INNER JOIN may be referred to as a JOIN. A FULL OUTER JOIN can be called an OUTER JOIN. etc.
+
+Imagine we have two tables:
+
+Table A
+ ColA
+  1
+  2
+  3
+  4
+
+Table B 
+ ColB
+  3
+  4
+  5
+  6
+
+If we were to join these tables together, the number of rows returned would depend on the join we use. Notice 1 and 2 are unique to Table A, 5 and 6 are unique to table B. 3 and 4 are common to both tables.
+
+SELECT *
+FROM A INNER JOIN B ON A.ColA = B.ColB;
+
+This would return:
+ColA | ColB
+ 3   |  3
+ 4   |  4
+INNER JOIN requires that the value be on both tables
+
+SELECT *
+FROM A LEFT OUTER JOIN B ON A.ColA = B.ColB;
+
+This would return:
+ColA | ColB
+ 1   | NULL
+ 2   | NULL
+ 3   |  3
+ 4   |  4
+LEFT OUTER JOIN returns everything from the first table (left) whether or not the second table has a corresponding row
+
+SELECT *
+FROM A RIGHT OUTER JOIN B ON A.ColA = B.ColB;
+
+This would return:
+ColA | ColB
+ 3   |  3
+ 4   |  4
+ NULL|  5
+ NULL|  6
+RIGHT OUTER JOIN returns everything from the second table (right) whether or not the first table has a corresponding row
+
+SELECT *
+FROM A FULL OUTER JOIN B ON A.ColA = B.ColB;
+
+This would return:
+ColA | ColB
+ 1   | NULL
+ 2   | NULL
+ 3   |  3
+ 4   |  4
+ NULL|  5
+ NULL|  6
+FULL OUTER JOIN returns everything from both tables whether or not there are corresponding rows

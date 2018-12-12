@@ -1,0 +1,51 @@
+Null and blanks - Text lecture
+Section 3, Lecture 43
+Let's add more data to help explore the issue of null and empty string: 
+
+INSERT INTO movies (title, rating)
+VALUES
+  ('DodgeBall: A True Underdog Story' ,'PG-13')
+  ,('Along Came Polly','PG-13')
+  ,('Anchorman:The Legend of Ron Burgundy','PG-13');
+
+INSERT INTO movies (title, release_year)
+VALUES
+  ('Anchorman 2: The Legend Continues' ,2013)
+  ,('Megamind',2010);
+
+INSERT INTO movies (title, rating)
+VALUES('Fight Club','');
+
+NULL Means there is no data.  This happens all the time depending on the data you are dealing with. The issue comes is when you are trying come compare a non-existent value (null) to anything
+
+SELECT * 
+FROM movies
+WHERE NOT rating = 'PG-13'
+ AND  NOT rating = 'PG'
+ AND  NOT rating = 'R';
+
+Where did Anchorman 2 and Megamind go?
+
+SELECT * 
+FROM movies
+WHERE rating IS NULL;
+
+The issue is we were comparing NULL (a non existent value) to a value. Non-existent values don't equal anything. “IS NULL” and IS NOT NULL” compares the field in a way that will return content in these scenarios.
+
+SELECT * 
+FROM movies
+WHERE rating = 'R'
+      OR rating IS NULL;
+
+We can compare a string to an empty string.
+SELECT * 
+FROM movies
+WHERE rating = 'R'
+      OR rating = ‘’;
+
+SELECT * 
+FROM movies
+WHERE rating = 'R'
+      OR IFNULL(rating,'') = ''; 
+
+IFNULL(A, B) where A is the field to be compared and B is the default value to be used when NULL is found.  Oracle uses NVL and SQL Server uses ISNULL

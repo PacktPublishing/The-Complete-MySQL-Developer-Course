@@ -1,0 +1,173 @@
+Update action - Text lecture
+Section 7, Lecture 109
+Update
+
+Create a new file titled UpdateToDo.php and put the following in it
+<?php      
+  include('SQLFunctions.php');
+
+   /*The Read page ToDoApp.php is going to link to this page by sending an html form POST 
+   with the ToDoID as the only input. We could name it anything. In this case, we named it "q" */
+   $q=$_POST["q"];
+   
+   /*Open the database connection based on config.php file settings*/
+   $link = connectDB();
+   
+    /*Create the Sql Statement*/
+    $sql = "SELECT ToDoID, ToDoTitle, ToDoDescription, ToDueDate FROM ToDos WHERE ToDoID = 7";   
+    /*$sql = "SELECT ToDoID, ToDoTitle, ToDoDescription, ToDueDate FROM ToDos WHERE ToDoID =".$q;*/
+    /*We will use the hard-coded sql statement for now*/
+    echo '<br>sql :'.$sql.'<br>Comment this out, after testing<br><br>';
+    
+    
+    /*If the $sql passes validation, exectute it*/
+    if($stmt = $link->prepare($sql))
+    {
+        $stmt->execute();
+        /*Assign the results into their respective php variables*/
+        $stmt->bind_result($ToDoID, $ToDoTitle, $ToDoDescription, $ToDueDate);
+        while ($stmt->fetch())
+        {
+          /*reformat the date to html*/
+          $newToDueDate = date("Y-m-d", strtotime($ToDueDate));
+          echo "<BODY>";
+          echo "  <div>";
+          echo "    <div>";
+          echo "    <h1>Update To-do</h1>";
+          /*Create and prepopulate an html form with the values pulled from the database.*/
+          echo "    <form action='UpdateToDoCommit.php' method = 'POST' onsubmit='' />";
+          echo "      <input type='hidden' name='ToDoId' value='".$ToDoID."'>";
+          echo "      <p>To-do Title:  <input text='text' name='ToDoTitle' maxlength='50'  required value='".$ToDoTitle."'/></p>";
+          echo "      <p>To-Due Date:  <input type='date' name='ToDueDate' value='".$newToDueDate."''></p>";
+          echo "      <p>Description:<br> <textarea cols='100' rows='5' name='ToDoDesr' maxlength='1000'  required>".$ToDoDescription."</textarea></p>";
+          echo "      <input type='submit'> ";
+          echo "    </form>";
+          echo "    <a href='ToDoApp.php'><button>Cancel</button></a>";
+          echo "    </div>";
+          echo "  </div>";
+          echo "</BODY>";    
+        }
+    }
+    else  { 
+      echo 'Unable to connect'; 
+      exit();
+    }
+?>   
+
+This should look almost exactly like the Create upon testing in the browser
+
+The plan is to query the database, then populate these fields when the file is loaded.
+Then when submit is clicked, the row is updated in the database.
+
+To update the database, create a new file titled UpdateToDoCommit.php
+<?php      
+include('SQLFunctions.php');
+
+// If there is anything in the POST, store the data from the form into variables
+if ( !empty($_POST)) {
+  $tdID = $_POST['ToDoId'];
+  $tdTitle = $_POST['ToDoTitle'];
+  $tdDate  = $_POST['ToDueDate'];
+  $tdDescr = $_POST['ToDoDesr'];
+         
+  /*Open the database connection based on config.php file settings*/
+  $link = connectDB();
+
+  /*Prepare the SQL INSERT Statement*/
+  $sql = "UPDATE ToDos
+          SET ToDoTitle = '".$tdTitle."'
+             ,ToDoDescription = '".$tdDescr."'
+             ,ToDueDate ='".$tdDate."'
+             ,UpdateTS =  NOW()
+          WHERE ToDoId = ".$tdID.";";
+  echo $sql."<br>Comment this out, once tested"; 
+  
+  /*Insert values into the database*/
+  if (mysqli_query($link, $sql)) {
+      echo "<br>Update record successfully";
+  } else {
+      echo  "<br>Error: " . $sql . "<br>" . mysqli_error($link);
+  }
+
+/*Close database connection*/
+mysqli_close ( $link );
+
+/*Forwarded User Back to Main View*/  
+/*header("Location: ToDoApp.php");  Uncomment this after testing */
+
+}
+
+?>
+
+Test it out by submitting an update from UpdateToDo.php
+
+Update ToDoApp.php as follows:
+Replace the last echo td with this:
+          echo "<td><form action='UpdateToDo.php' method = 'POST' onsubmit='' /> <input type='hidden' name='q' value='".$row[3]."' /><input type='Submit' value='Update'></form></td>";
+
+Also, comment out the echo $SQL
+
+<?php
+include('SQLFunctions.php');
+?>
+<html>
+<!--The Style tag allows us to put some basic css shading and borders to make the table a little easier to look at.  Table, th and td are elements of an html table.-->
+<style>
+  table, th, td { border: 1px solid black;
+                  border-collapse: collapse; }
+  table th { background-color: black;
+             color: white; }    
+  table tr:nth-child(even) { background-color: #eee; }
+  table tr:nth-child(odd)  { background-color: #fff; }
+</style>  
+  <body>
+      <h1>To-do Main View</h1>
+      <a href="CreateToDo.php"><button>New To-do</button></a>
+<?php      
+  /*Create the SQL Statement, selecting the four columns were are interested in*/
+  /*format the date to display it easier*/
+  $sql="SELECT ToDoTitle
+                ,ToDoDescription
+                ,DATE_FORMAT(ToDueDate,'%m-%d-%Y')  
+                ,ToDoID
+          FROM ToDos;";  
+  /*echo '<br>sql :'.$sql.'<br>Comment this out, after testing<br><br>';*/
+ 
+   /*Open the database connection based on config.php file settings*/
+  $link = connectDB();
+
+  /*Execute the sql and if there is a result, write out the table headers, then rows*/
+  if ($result = mysqli_query($link,$sql)){
+      echo "<table>";
+        //header
+        echo "<tr>";
+          echo "<th>Title</td>";
+          echo "<th>Description</td>";
+          echo "<th>DueDate</td>";
+          echo "<th>Action</td>";   
+        echo "</tr>";
+      
+      //rows, use a while loop to write out each field in the result set.
+      //mysqli_fetch_array() separates the results into an array named  $row so 
+      //that each field can be referrenced using $row[x]
+      while ($row = mysqli_fetch_array($result))  {
+        echo "<tr>";
+          echo "<td>{$row[0]}</td>";
+          echo "<td>{$row[1]}</td>";
+          echo "<td>{$row[2]}</td>";
+          echo "<td><form action='UpdateToDo.php' method = 'POST' onsubmit='' /> <input type='hidden' name='q' value='".$row[3]."' /><input type='Submit' value='Update'></form></td>";
+        echo "</tr>";
+      } 
+      echo "</table>";
+    }
+    
+  /*Close database connection*/
+  mysqli_close ( $link );
+?>
+
+  </body>
+</html>
+
+Back on UpdateToDo.php
+Comment out the hard coded  $sql row, and uncomment the dynamic one.
+Test it out by updating a few existing ToDo records.

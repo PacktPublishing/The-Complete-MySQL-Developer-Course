@@ -1,0 +1,35 @@
+Joins and aliases - Text lecture
+Section 5, Lecture 63
+Join:
+
+SELECT * 
+FROM movies
+    ,people
+WHERE movies.DIRECTOR = people.ActorID ;
+
+We simply list the tables with a comma to separate them and we define how the two tables relate to each other in the where clause.
+
+When dealing with more than one table, we should always specify the table. Often times tables have columns with the same names and MySQL won’t know which one you want.  
+
+Let's select some specific columns instead of all of them:  
+SELECT movies.TITLE
+      ,movies.RELEASE_YEAR
+      ,movies.RATING
+      ,CONCAT(people.FIRST_NAME,' ',people.LAST_NAME) AS Director
+FROM movies
+    ,people
+WHERE movies.DIRECTOR = people.ActorID ;
+
+While specifying the table is necessary in many situations, and always a good habit, it causes a Lot of typing and can make the code look overwhelming. Which is why we use aliases
+
+Aliases
+
+SELECT A.TITLE
+      ,A.RELEASE_YEAR
+      ,A.RATING
+      ,CONCAT(B.FIRST_NAME,' ',B.LAST_NAME) AS Director
+FROM movies A
+    ,people B
+WHERE A.DIRECTOR = B.ActorID ;
+
+You can use anything as the alias, but I have found that simply using from letters A-Z for each table is the best way. It’s clean and straightforward. All of the examples and code going forward will incorporate this type of aliasing.

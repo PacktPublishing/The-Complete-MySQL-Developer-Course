@@ -1,0 +1,60 @@
+More about joins - Text lecture
+Section 5, Lecture 65
+Let’s Join Movies with Characters
+
+SELECT A.TITLE
+      ,A.RELEASE_YEAR
+      ,A.RATING
+      ,B.CharacterName
+      ,B.ActorID
+FROM movies A
+    ,characters B
+WHERE A.MovieID = B.MovieID;
+
+We can add additional tables:
+SELECT A.TITLE
+      ,A.RELEASE_YEAR
+      ,A.RATING
+      ,B.CharacterName
+      ,CONCAT(C.FIRST_NAME,' ',C.LAST_NAME) AS Actor
+FROM movies A
+    ,characters B
+    ,people C
+WHERE A.MovieID = B.MovieID 
+ AND  B.ActorID  = C.ActorID;
+
+We can reference the same table multiple times to pull information for various reasons. In the case below, we are using the People table to provide the name of both the directors and the actors
+
+SELECT A.TITLE
+      ,CONCAT(D.FIRST_NAME,' ',D.LAST_NAME) AS Director
+      ,A.RELEASE_YEAR
+      ,A.RATING
+      ,B.CharacterName
+      ,CONCAT(C.FIRST_NAME,' ',C.LAST_NAME) AS Actor
+FROM movies A
+    ,characters B
+    ,people C
+    ,people D
+WHERE A.MovieID  = B.MovieID 
+ AND  B.ActorID  = C.ActorID
+ AND  A.DIRECTOR = D.ActorID
+ AND  A.TITLE LIKE 'Zoo%';
+
+This can be written a different way. Listing tables in the FROM and joining them in the WHERE is perfectly acceptable, you can also join tables by putting everything in the FROM:
+
+SELECT A.TITLE
+      ,CONCAT(D.FIRST_NAME,' ',D.LAST_NAME) AS Director
+      ,A.RELEASE_YEAR
+      ,A.RATING
+      ,B.CharacterName
+      ,CONCAT(C.FIRST_NAME,' ',C.LAST_NAME) AS Actor
+FROM movies A
+       INNER JOIN characters B
+         ON A.MovieID  = B.MovieID 
+       INNER JOIN people C
+         ON B.ActorID  = C.ActorID  
+       INNER JOIN people D
+         ON A.DIRECTOR = D.ActorID
+WHERE A.TITLE LIKE 'Zoo%';
+
+Both of these joins are Inner Joins. They mean that all of the rows in all of the tables need to exist. If no actors were listed for a movie, the movie won't show on the list. If no movies are associated with that actor, the actor won’t be returned.

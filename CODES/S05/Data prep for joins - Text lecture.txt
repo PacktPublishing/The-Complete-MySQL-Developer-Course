@@ -1,0 +1,101 @@
+Data prep for joins - Text lecture
+Section 5, Lecture 61
+Lets prepare some tables for Joins.
+Generally, you don’t want to rename tables, but let's expand the definition of our actors table and name it as people
+
+RENAME TABLE actors TO people;
+
+Now let's add some more people:
+
+INSERT INTO people (FIRST_NAME , LAST_NAME)
+VALUES ('Steven','Spielberg')
+    ,('Shawn','Levy') 
+    ,('Jon','Turteltaub') 
+    ,('Rawson','Thurber') 
+    ,('John','Hamburg') 
+    ,('Adam','McKay') 
+    ,('Tom','McGrath')
+    ,('David','Fincher');
+
+Now let's add a director column to the movies table which will be a foreign key with the primary key of the people table:
+
+ALTER TABLE movies 
+ADD COLUMN  Director INT NULL;
+
+Now let's set directors for each row in the movies table:
+UPDATE movies
+SET Director = 1
+WHERE MovieId IN (1,2,7);
+
+UPDATE movies
+SET Director = 17
+WHERE MovieId IN (3,4,5);
+
+UPDATE movies
+SET Director = 18
+WHERE MovieId = 6;
+
+UPDATE movies
+SET Director = 19
+WHERE MovieId = 8;
+
+UPDATE movies
+SET Director = 20
+WHERE MovieId = 9;
+
+UPDATE movies
+SET Director = 21
+WHERE MovieId IN (10,11);
+
+UPDATE movies
+SET Director = 22
+WHERE MovieId = 12;
+
+UPDATE movies
+SET Director = 23
+WHERE MovieId = 13;
+
+Let's create a characters table:
+
+CREATE TABLE characters ( characterID INT NOT NULL AUTO_INCREMENT
+                         ,MovieID INT NULL 
+                         ,ActorID INT NULL
+                         ,CharacterName VARCHAR(100) NULL
+                         ,PRIMARY KEY (characterID));    
+
+Let's add some characters to it with the foreign keys of MovieID and ActorID, along with Character Name in the movie:
+INSERT INTO characters (MovieID , ActorID, CharacterName) VALUES
+ (1 , 1 , 'Derek Zoolander')
+,(1 , 2 , 'Hansel')
+,(1 , 3 , 'Matilda Jeffries')
+,(1 , 4 , 'Mugatu')
+,(1 , 5 , 'Katinka')
+,(1 , 6 , 'Maury Ballstein')
+,(1 , 7 , 'J.P. Prewitt')
+,(1 , 8 , 'Larry Zoolander')
+,(1 , 9 , 'Todd')
+,(2 , 1 , 'Derek Zoolander')
+,(2 , 2 , 'Hansel')
+,(2 , 3 , 'Matilda Jeffries')
+,(2 , 4 , 'Mugatu')
+,(2 , 5 , 'Katinka')
+,(2 , 9 , 'Todd')
+,(2 , 10, 'Alexanya Atoz')
+,(2 , 11, 'Valentina Valencia')
+,(2 , 12, 'Lenny Kravitz')
+,(2 , 14, 'Justin Bieber')
+,(2 , 15, 'Derek Jr.')
+,(5 , 1 , 'Larry Daley')
+,(5 , 2 , 'Jedediah')
+,(4 , 1 , 'Larry Daley')
+,(4 , 2 , 'Jedediah')
+,(3 , 1 , 'Larry Daley')
+,(3 , 2 , 'Jedediah')
+,(3 , 1 , 'Laaa')
+,(6 , 8 , 'Patrick Gates')
+,(7 , 1 , 'Tugg Speedman')
+,(7 , 3 , 'Rebecca')
+,(7 , 8 , 'Jon Voight')
+,(8 , 3 , 'Kate Veatch')
+,(8 , 1 , 'White Goodman')
+,(9 , 1 , 'Reuben Feffer');

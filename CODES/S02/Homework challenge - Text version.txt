@@ -1,0 +1,20 @@
+Homework challenge - Text version
+Section 2, Lecture 20
+Phase 1:
+
+Create a table which should have the following columns:
+Primary Key (int), Fname, Lname, Game1, Game2, Game3, Game4
+
+Fill in data for the table with your and 3 of your friends names and 4 game scores (remember id for each row, primary key, should be assigned automatically)
+
+Phase 2:
+Create a report from the data in the table:
+Exclude ID column
+- Each column should have a custom header/title, atleast 1 should have a space in it
+- A column with player initials
+- A column with last name, first name separated by comma
+- Return each game's score
+- Column with total score of all four games for each player
+- Column with average score for each player
+
+IMPORTANT: Please post your code to the Q & A section for this lecture (or the prior video lecture)

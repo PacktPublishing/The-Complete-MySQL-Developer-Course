@@ -1,0 +1,12 @@
+Learn php basics
+Section 6, Lecture 89
+At this point it's very important to learn the basics of php. Some of you already know php (at different levels) and that's good, but I encourage all of you to work through this pdf that has been created with the students of this course in mind. It starts with the absolute basics of php. This is a working document, soon there will be a project with OOP added as well but that is "coming soon" as of now. 
+
+There are two ways you can access this book, you can download it from the resources tab of this lecture or you can access the book from the link below:
+
+https://drive.google.com/drive/folders/0B9OW--LNlXYRbjMyYWN3Mm9FVVU?usp=sharing
+
+Enjoy!
+
+Resources for this lecture
+learning-php.pdf

@@ -1,0 +1,29 @@
+Solution - Text
+Section 2, Lecture 22
+CREATE TABLE players1 (BowlerID INT NOT NULL AUTO_INCREMENT
+
+                     ,FNAME varchar(50) DEFAULT NULL
+                     ,LNAME varchar(50) DEFAULT NULL
+                     ,Game1 int DEFAULT NULL 
+                     ,Game2 int DEFAULT NULL 
+                     ,Game3 int DEFAULT NULL 
+                     ,Game4 int DEFAULT NULL                      
+                     ,PRIMARY KEY (BowlerID)); 
+INSERT INTO players1 (FNAME, LNAME,Game1,Game2,Game3,Game4)
+VALUES ('Mashrur', 'Hossain',121,87,115,124)
+      ,('Matt', 'Berstein',111,99,135,105)
+      ,('Anastasia', 'Ivanov',75,99,125,141)
+      ,('Mark', 'Futre',115,128,101,84);
+      
+SELECT *
+FROM players1;
+
+SELECT CONCAT(LNAME,', ',FNAME) AS Player
+      ,CONCAT(SUBSTRING(FNAME,1,1),SUBSTRING(LNAME,1,1)) AS Initials
+      ,GAME1 AS G1
+      ,GAME2 AS G2
+      ,GAME3 AS G3
+      ,GAME4 AS G4
+      ,GAME1 + GAME2 + GAME3 + GAME4 AS "Tournament Total"
+      ,(GAME1 + GAME2 + GAME3 + GAME4)/4 AS "Tournament Average"
+FROM players1;

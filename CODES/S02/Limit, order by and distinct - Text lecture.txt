@@ -1,0 +1,55 @@
+Limit, order by and distinct - Text lecture
+Section 2, Lecture 27
+Large datasets where you don’t want to tax the system returning millions of rows use limit:
+
+SELECT *
+FROM actors
+LIMIT 10; 
+
+This query above will return the first 10 results from the actors table instead of all the rows.
+
+Order by can be used to sort the data that is returned in the query result:
+SELECT *
+FROM actors
+ORDER BY 3;
+
+This query above will return the results sorted by the 3rd column of the table in ascending order by default
+
+Which is the same as 
+SELECT *
+FROM actors
+ORDER BY LAST_NAME ASC;
+
+The ASC is for ascending which is implied.  The opposite is descending DESC
+
+SELECT *
+FROM actors
+ORDER BY 3 DESC;
+
+We can also sort by multiple columns at the same time and by name
+SELECT *
+FROM actors
+ORDER BY LAST_NAME ASC, FIRST_NAME DESC;
+Notice the order the Jerry and Ben are in.
+
+And you can combine LIMIT and ORDER BY
+SELECT *
+FROM project1.actors
+ORDER BY LAST_NAME ASC
+        ,FIRST_NAME ASC
+LIMIT 10;
+
+DISTINCT 
+
+Let's say you want to know all of the ratings for the movies 
+SELECT RATING
+FROM movies;
+
+But don’t like the duplicate rows and want to only display unique ratings.
+SELECT DISTINCT RATING
+FROM movies;
+
+Distinct only works when the whole row returned is unique. In the query below, because each movie has a unique ID, none of the rows are removed.
+SELECT DISTINCT MovieID
+               ,RATING
+FROM movies;

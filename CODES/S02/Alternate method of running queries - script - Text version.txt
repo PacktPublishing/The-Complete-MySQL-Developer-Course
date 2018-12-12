@@ -1,0 +1,6 @@
+Alternate method of running queries - script - Text version
+Section 2, Lecture 24
+To run a sql script, create a file (example: test1.sql) in your working directory and save it. Add all the sql code you want to run in there. 
+
+Start a SQL cli session and use the source keyword to execute it. If you wanted to run test1.sql type in:
+source test1.sql

@@ -1,0 +1,148 @@
+Project - Solution text
+Section 6, Lecture 101
+Copy contents of OptIn.html into a new file, I used PoliticalPoll.html
+
+<!DOCTYPE html>
+<HTML>
+  <HEAD>
+    <TITLE>Political Poll</TITLE>
+    <META http-equiv=Content-Type content="text/html; charset=utf-8">
+    <link href="styles.css" rel="stylesheet" type="text/css">  
+<script type="text/javascript"> 
+function validateForm(){
+  return true;
+};             
+</script>
+  </HEAD> 
+  <BODY>
+      <div class="backgroundimage" >
+      <div id="main-content" class="main-content" >
+    <h1>Politics</h1>
+      <form action="receiver.php" method = "POST" onsubmit='return validateForm()' />
+        <input type="hidden" name="formID" value="PoliticalPoll" />
+        <input type="hidden" name="successredirecturl" value="Success.html">
+        <input type="hidden" name="rejectredirecturl" value="Fail.html">
+        <p>Gender: 
+          <select name="GENDER" required>
+            <option value="">Please Select</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other" >Other</option>
+          </select>
+        </p>
+        <p>Age:  <input type="number" name="AGE" min="0" max="110"  required/></p>
+        <p>How often do you vote:  
+          <select name="VOTE_FREQ" required>
+            <option value="">Please Select</option>
+            <option value="Always">Always</option>
+            <option value="Sometimes">Sometimes</option>
+            <option value="Never" >Never</option>
+          </select>
+        </p>
+        <p>Political Party:  
+          <select name="PARTY" required>
+            <option value="">Please Select</option>
+            <option value="Republican">Republican</option>
+            <option value="Democrat">Democrat</option>
+            <option value="Libertarian">Libertarian</option>
+            <option value="Not Listed">Not Listed</option>
+            <option value="Not Affiliated">Not Affiliated</option>            
+          </select>
+        </p>
+        <p>Who will you vote for: 
+          <select name="CANDIDATE" required>
+            <option value="">Please Select</option>
+            <option value="Bernie">Bernie</option>
+            <option value="Hillary">Hillary</option>
+            <option value="Trump">Trump</option>
+            <option value="Cruz">Cruz</option>
+            <option value="Rubio">Rubio</option>            
+          </select>
+        </p>        
+        <br>
+        <input type="submit" class='button'>        
+      </form>
+    </div>
+  </div>
+  </BODY>
+</HTML>
+
+Create the Table:
+CREATE TABLE PoliticalPoll ( PoliticalPollID INT NOT NULL AUTO_INCREMENT
+                            ,formID varchar(20) DEFAULT NULL
+                            ,GENDER varchar(20) DEFAULT NULL                            
+                            ,AGE varchar(20) DEFAULT NULL
+                            ,VOTE_FREQ varchar(20) DEFAULT NULL
+                            ,PARTY varchar(20) DEFAULT NULL
+                            ,CANDIDATE varchar(20) DEFAULT NULL
+                            ,ENTRY_TimeStamp datetime DEFAULT NULL
+                            ,SOURCE_IP char(15) DEFAULT NULL
+                            ,successredirecturl char(200) DEFAULT NULL
+                            ,rejectredirecturl char(200) DEFAULT NULL
+                            ,PRIMARY KEY (PoliticalPollID)); 
+
+For browser viewing of table data copy over OptInDisplay.php and make necessary updates to column and row data
+OptInDisplayPoll.php
+<?php
+include('SQLFunctions.php');
+
+/*Open the database connection based on config.php file settings*/
+  $link = f_sqlConnect();
+  
+/*Set Source Table*/  
+    $table = 'PoliticalPoll';
+  echo '<br>Source Table: ' . $table;
+  
+/*check to see if the table exists*/
+  if (!f_tableExists($link, $table, DB_NAME) ) {
+    die('<br>Destination Table Does Not Exist:'.$table);
+  }
+
+/*Query contents of source table*/
+  $sql="SELECT * FROM $table ";
+  echo '<br>sql :'.$sql;
+    if ($result = mysqli_query($link,$sql)){
+      echo "<table border=''1'' style=''width:100%''>";
+        //header
+        echo "<tr>";
+          echo "<td>PoliticalPollID</td>";
+          echo "<td>formID</td>";
+          echo "<td>Gender</td>";
+          echo "<td>Age</td>";
+          echo "<td>Voting Frequency</td>";
+          echo "<td>Party</td>";          
+          echo "<td>Cadidate</td>";
+          echo "<td>EntryTimeStamp</td>";           
+          echo "<td>Source IP</td>";
+          echo "<td>SuccessUrl</td>";
+          echo "<td>RejectUrl</td>";          
+        echo "</tr>";
+      
+      //data  
+      while ($row = mysqli_fetch_array($result))  {
+        echo "<tr>";
+          echo "<td>{$row[0]}</td>";
+          echo "<td>{$row[1]}</td>";
+          echo "<td>{$row[2]}</td>";
+          echo "<td>{$row[3]}</td>";
+          echo "<td>{$row[4]}</td>";
+          echo "<td>{$row[5]}</td>";
+          echo "<td>{$row[6]}</td>";
+          echo "<td>{$row[7]}</td>";
+          echo "<td>{$row[8]}</td>";          
+          echo "<td>{$row[9]}</td>";             
+          echo "<td>{$row[10]}</td>";                       
+        echo "</tr>";
+      } 
+      echo "</table>";
+    }
+    mysqli_free_result($result);
+
+  if (mysqli_error($link)) {
+    echo '<br>Error: ' . mysqli_error($link);
+  }else echo '<br>Success';
+
+/*Close database connection*/
+  mysqli_close ( $link );
+  
+?>

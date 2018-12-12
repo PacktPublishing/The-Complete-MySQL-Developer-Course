@@ -1,0 +1,66 @@
+Comparison operators - Text lecture
+Section 3, Lecture 39
+Greater than and less than are pretty straight forward in their use and meaning:
+
+SELECT title
+    ,release_year
+FROM movies
+WHERE release_year > 2005;   
+
+Notice that Night at the Museum and National Treasure are not in the list.
+
+SELECT title
+    ,release_year
+FROM movies
+WHERE release_year > 2005
+ AND  release_year < 2016; 
+
+We can combine greater than and less than to limit to a specific range.
+
+We can include the limits of the range using >= or <= (Greater Than or Equal To/Less Than or Equal To)
+SELECT title
+    ,release_year
+FROM movies
+WHERE release_year >= 2005
+ AND  release_year <= 2016;  
+
+While this is a great way to accomplish this, it’s also perfectly acceptable to use BETWEEN
+
+SELECT title
+    ,release_year
+FROM movies
+WHERE release_year BETWEEN 2005 AND 2016; 
+
+Exact Same results that include 2005 and 2016 
+
+Combination of both Greater Than and Less Than is <> which means Not Equal.  
+SELECT title
+      ,release_year
+FROM movies
+WHERE release_year <> 2016;  
+
+Notice that the only value missing is the 2016
+
+Not Equal also works well with other data types like strings.
+SELECT title
+      ,release_year
+FROM movies
+WHERE title <> 'Zoolander';   
+
+Just like = and <>, we can use IN to include or exclude multiple values at the same time
+SELECT title
+      ,release_year
+FROM movies
+WHERE release_year IN (2005,2009,2010);   
+
+In order to exclude items, we can use NOT IN
+SELECT title
+      ,release_year
+FROM movies
+WHERE release_year NOT IN (2005,2009,2010); 
+
+This also works well for Strings
+SELECT title
+      ,release_year
+FROM movies
+WHERE title IN ('Zoolander','Tropic Thunder');

@@ -1,0 +1,5 @@
+Stored Procedures and Scheduled jobs section doc
+Section 12, Lecture 130
+You can access the content in this google doc link: https://docs.google.com/document/d/1HdcTWMWDnLmp8-R4nhJBuVcSGMA8-u69YDTrGMSEOjQ/edit?usp=sharing
+
+Good luck and enjoy!

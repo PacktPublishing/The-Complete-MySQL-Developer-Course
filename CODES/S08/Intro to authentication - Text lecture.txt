@@ -1,0 +1,98 @@
+Intro to authentication - Text lecture
+Section 8, Lecture 113
+We want our application to allow users to log in using a username and password. The application will check that the user exists in the database and confirm that their password is correct.
+
+We also want to force users to log in. If they try to access pages when they aren’t logged in, we need to reroute them to the login page.
+
+Php offers a way to store information that can be accessed across multiple pages call sessions. A session is unlike a cookie in that the information is stored on the server instead of the user’s machine.  
+http://www.w3schools.com/php/php_sessions.asp
+Well put sessions to work after we create the MySQL table.
+
+Start by creating a User Definition table
+CREATE TABLE User_Dfn ( User_ID INT NOT NULL AUTO_INCREMENT
+                       ,username varchar(20) NOT NULL
+                       ,pwd varchar(40) NOT NULL
+                       ,PRIMARY KEY (User_ID));   
+
+Now create a page to add new users. Create a new file named AddUser.php
+This page will simply collect the user name and password that we want to use, and send it in a post action to AddUserSubmit.php.
+
+<?php      
+/* begin our session */
+session_start();
+?>
+
+<html>
+<head>
+  <title>Add New User</title>
+</head>
+
+<body>
+<h2>Add New User</h2>
+<form action="AddUserSubmit.php" method="post">
+  <fieldset>
+    <p>
+      <label>Username</label>
+      <input type="text" name="username" value="" maxlength="20" required/>
+      <i>(4-20 characters)</i>
+    </p>
+    <p>
+      <label>Password</label>
+      <input type="password" name="pwd" value="" maxlength="20" required/>
+      <i>(4-20 characters)</i>
+    </p>
+    <p> 
+      <input type="submit" value="Add User" />
+    </p>
+  </fieldset>
+</form>
+</body>
+</html>
+
+Next, Add a new file titled AddUserSubmit.php
+
+For filter_var FILTER_SANITIZE_STRING function check out the link below:
+http://www.w3schools.com/php/filter_sanitize_string.asp
+This function removes special characters which can cause many issues including possible security risks.
+
+<?php
+require_once('SQLFunctions.php');
+session_start();
+
+/* Check that username, and password are populated*/
+if(!isset( $_POST['username'], $_POST['pwd']))
+{
+    $message = 'Please enter a valid username and password';
+}
+/* Check username length is not more than 20 and not less than 4*/
+elseif (strlen( $_POST['username']) > 20 || strlen($_POST['username']) < 4)
+{
+    $message = 'Incorrect Length for Username';
+}
+/* Check password length is not more than 20 and not less than 4*/
+elseif (strlen( $_POST['pwd']) > 20 || strlen($_POST['pwd']) < 4)
+{
+    $message = 'Incorrect Length for Password';
+}
+/* Check the username for alpha numeric characters */
+elseif (ctype_alnum($_POST['username']) != true)
+{
+    $message = "Username must be alpha numeric";
+}
+/* Check the password for alpha numeric characters */
+elseif (ctype_alnum($_POST['pwd']) != true)
+{
+        $message = "Password must be alpha numeric";
+}
+else
+{
+    /* Store username and pwds as variable */
+    /*Use filter_var to remove special characters from the inputs*/
+    $username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
+    $pwd = filter_var($_POST['pwd'], FILTER_SANITIZE_STRING);
+
+    /* Encrypt with password with sha1, a cryptographic hash function  */
+    /* Never store plain text passwords in the database*/
+    $pwd = sha1( $pwd );
+
+We will continue building this in the next video

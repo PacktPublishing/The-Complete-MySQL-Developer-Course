@@ -1,0 +1,5 @@
+IMPORTANT: Development Environment Setup - Overview
+Section 1, Lecture 4
+To speed up setup and not run into installation issues we will use an online Integrated Development Environment instead of downloading software to our local machine. 
+
+We will cloud9 which is an industry leader in online IDE's and comes pre-installed with everything we need to get started. However, they were purchased by AWS and may require a credit card on file to sign-up. While they don't charge anything (we'll use the free-tier), they keep a credit card on file for security reasons. If you want to skip the AWS sign-up procedure, you can request access to cloud9 from me. I have an instructor account with them and can send you a personal invitation link. This is a manual process and will involve you signing up for my newsletter with valid name, email address and Udemy username (so I can verify that you are a registered student in the course). You can request this access here: http://www.mashrurhossain.com/#inquire 

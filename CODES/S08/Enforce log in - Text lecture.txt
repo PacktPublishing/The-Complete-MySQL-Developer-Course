@@ -1,0 +1,70 @@
+Enforce log in - Text lecture
+Section 8, Lecture 119
+Create a file titled TestLoginStatus.php
+
+<?php      
+require_once('SQLFunctions.php');
+session_start();
+
+if(!isset($_SESSION['user_id']))
+{
+    $message = 'You must be logged in to access this page';
+}
+else
+{
+    /*copy the session user_id to a local variable*/
+    $user_id = $_SESSION['user_id'];
+    /*echo "<br>user_id=".$user_id;*/
+    
+    try
+    {
+         /*Connect to CRUD Database*/
+        $link = connectDB();
+
+        /* Prep SQL statement to find the user name based on the user_id */
+        $sql = "SELECT username FROM User_Dfn WHERE User_ID = ".$user_id;
+        /*echo "<br>".$sql."<br>";*/
+        
+        /*execute the sql statement*/
+        if($result=mysqli_query($link,$sql)) 
+        {
+          /*from the sql results, assign the username that returned to the $username variable*/    
+          while($row = mysqli_fetch_assoc($result)) {
+            $username = $row['username'];
+            /*echo "<br>username=".$username;*/
+          }        
+        }
+
+        /* Return Status to User*/
+        if($username == false)
+        {
+            $message = 'Access Error';
+        }
+        else
+        {
+            $message = 'Welcome '.$username;
+        }
+    }
+    /*if something goes wrong, return the following error*/
+    catch (Exception $e)
+    {
+        $message = 'Unable to process request.';
+    }
+}
+
+?>
+
+<html>
+<head>
+<title>Test Login Status</title>
+</head>
+<body>
+<h2><?php echo $message; ?></h2>
+</body>
+</html>
+
+Now test out this page -> If you aren’t logged in, you will see a message that you must be logged in to access this page
+
+If you are logged in, you will see a welcome message with your username 
+
+Now that we can log in and out of the site using session, we need to enforce this which we will start in the next video

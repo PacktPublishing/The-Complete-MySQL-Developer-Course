@@ -1,0 +1,42 @@
+Inserting rows of data - Text lecture
+Section 2, Lecture 14
+To add data to tables:
+
+INSERT INTO actors ( FIRST_NAME , LAST_NAME )
+VALUES ('Ben','Stiller');
+
+We’ll discuss select further in the next lecture, but to show all data in the table:
+SELECT *
+FROM project1.actors; 
+
+To insert multiple values into actors table:
+INSERT INTO project1.actors ( FIRST_NAME , LAST_NAME )
+VALUES ('Owen','Wilson')
+      ,('Christine','Taylor')
+      ,('Will','Ferrell')
+      ,('Milla','Jovovich')
+      ,('Jerry','Stiller')
+      ,('David','Duchovny')
+      ,('Jon','Voight')
+      ,('Nathan','Graham');
+
+Now that we have Zoolander, lets add new actors from Zoolander 2
+INSERT INTO actors ( FIRST_NAME , LAST_NAME )
+VALUES ('Kristen','Wiig')
+      ,('Penélope','Cruz')
+      ,('Lenny','Kravitz')
+      ,('Macaulay','Culkin')
+      ,('Justin','Bieber')
+      ,('Cyrus','Arnold');
+   
+Now let's add data to the movies table:
+INSERT INTO movies ( Title , ReleaseYear, Rating )
+VALUES ('Zoolander',2001,'PG-13')
+      ,('Zoolander2',2016,'PG-13')
+      ,('Night at the Museum: Secret of the Tomb',2014,'PG')
+      ,('Night at the Museum: Battle of the Smithsonian',2009,'PG')
+      ,('Night at the Museum',2005,'PG')
+      ,('National Treasure',2004,'PG')
+      ,('Tropic Thunder',2008,'R');  
+
+SELECT * FROM movies; -> This will display all data from the movies table

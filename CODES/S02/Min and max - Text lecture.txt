@@ -1,0 +1,40 @@
+Min and max - Text lecture
+Section 2, Lecture 31
+SELECT MAX(ReleaseYear)
+
+FROM movies;
+
+They work exactly how you would expect.
+
+SELECT Title
+      ,MAX(ReleaseYear)
+      ,RATING
+FROM movies;
+*Incorrect results
+
+SELECT MIN(ReleaseYear)
+      ,RATING
+FROM movies
+WHERE Title like 'Night at the Museum%'
+GROUP BY Title
+        ,RATING;
+
+SELECT RATING
+      ,MIN(ReleaseYear)
+FROM movies
+WHERE Title like 'Night at the Museum%'
+GROUP BY RATING;
+
+SELECT RATING
+      ,MIN(ReleaseYear)
+FROM movies
+GROUP BY RATING;
+
+SELECT RATING
+      ,MAX(ReleaseYear)
+FROM movies
+GROUP BY RATING;
+
+MySQL is more “flexible” than other SQL versions.  It doesn’t require the GROUP BY but it should.  It is likely you will get unhelpful or incorrect results when you do not use a group by.
+
+All result sets should either be part of an aggregate function, or in the Group By.

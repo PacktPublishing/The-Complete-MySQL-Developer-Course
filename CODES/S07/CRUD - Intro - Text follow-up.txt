@@ -1,0 +1,126 @@
+CRUD - Intro - Text follow-up
+Section 7, Lecture 103
+Create Read Update Delete
+
+First in mysql cli, create a database and table for the project “To Do List”
+CREATE DATABASE CRUD;
+
+Then use the database
+USE CRUD;
+
+Create the table
+CREATE TABLE ToDos ( ToDoID INT NOT NULL AUTO_INCREMENT
+                    ,ToDoTitle varchar(50) DEFAULT NULL
+                    ,ToDoDescription varchar(1000) DEFAULT NULL
+                    ,Complete boolean DEFAULT NULL 
+                    ,ToDueDate datetime DEFAULT NULL 
+                    ,EntryTS datetime DEFAULT NULL
+                    ,UpdateTS datetime DEFAULT NULL
+                    ,CompleteTS datetime DEFAULT NULL
+                    ,PRIMARY KEY (ToDoID));  
+
+Make a test entry:
+INSERT INTO ToDos (ToDoTitle , ToDoDescription) 
+VALUES ('Laundry' , 'Do the Laundry');
+
+Create new folder ToDoCrud under workspace
+
+Create a new file titled ToDoApp.php
+
+Fill the file will the following content:
+<?php
+
+/*Connect to CRUD Database  mysqli(Server,User,Password,Database)*/
+$link = new mysqli('localhost', 'root', '', 'CRUD');
+
+/*Write error if they exist, otherwise, write success*/
+if ($link->connect_error) {
+  die("Connection failed: " . $link->connect_error);
+} else {echo "<br>Connected successfully"; }
+
+/*Close database connection*/
+  mysqli_close ( $link );
+?>
+Click Run Project 
+
+Open the url from Apache
+
+Open the ToDoCrud folder
+
+Then open ToDoApp.php
+
+The page should say “Connected successfully” confirming that you application was able to find the database and connect to it.
+
+Next step, insert rows
+
+Every time you access the page in your browser, it inserts a row into the table due to the code below that will be added now.  
+<?php
+
+/*Connect to CRUD Database  mysqli(Server,User,Password,Database)*/
+$link = new mysqli('localhost', 'root', '', 'CRUD');
+
+if ($link->connect_error) {
+  die("Connection failed: " . $link->connect_error);
+} else {echo "<br>Connected successfully"; }
+?>
+
+//adding basic CSS color and border to the table, th, and td tags
+<style>
+table, th, td { border: 1px solid black;
+                border-collapse: collapse; }
+table th { background-color: black;
+           color: white; }    
+table tr:nth-child(even) { background-color: #eee; }
+table tr:nth-child(odd)  { background-color: #fff; }
+</style>
+
+<body>
+  
+<?php
+
+/*Set Up the SQL statement*/
+$sql = "INSERT INTO ToDos (ToDoTitle, ToDoDescription) VALUES ('Test', 'TestDescription');";
+
+/*Exectute the statement, and write the results*/
+if (mysqli_query($link, $sql)) {
+    echo "<br>New record created successfully";
+} else {
+    echo "Error: " . $sql . "<br>" . mysqli_error($link);
+}
+  
+if (mysqli_error($link)) {
+    echo '<br>Error: ' . mysqli_error($link);
+    }else echo '<br>Success';
+
+/*Close database connection*/
+  mysqli_close ( $link );
+?>
+
+To reduce the amount of code we need to write and make it a bit more versatile going forward, let's make a config file and a functions file.
+
+Create a new file titled config.php with the following content:
+<?php
+/*Configuration Settings*/
+
+define('DB_HOST', 'localhost'); /*Database Server*/
+define('DB_NAME', 'CRUD'); /*Database Name*/
+define('DB_USER', 'root'); /*Database Username*/
+define('DB_PWD',  ''); /*Database Password*/
+?>
+
+Then make an SQLFunctions.php file with the following content:
+<?php
+include('config.php');
+
+/*Opens connection to database with credentials*/
+function connectDB() {
+    $link = new mysqli(DB_HOST, DB_USER, DB_PWD, DB_NAME);
+  if ($link->connect_error) {
+    die("Connection failed: " . $link->connect_error);
+  } 
+  /*echo "<br>Connected successfully"; */
+  return $link;
+}
+?>
+
+We’ll use these going forward to connect to the database.

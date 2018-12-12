@@ -1,0 +1,29 @@
+Case statements - Text lecture
+Section 3, Lecture 45
+SELECT title
+      ,rating
+FROM movies;  
+
+SELECT title
+      ,rating
+      ,CASE
+         WHEN RATING = 'PG'    THEN 'Bring the Kids!'
+         WHEN RATING = 'PG-13' THEN 'Older Kids'
+         WHEN RATING = 'R'     THEN 'Not for Kids'
+         ELSE 'No Information'
+       END AS AUDIENCE
+FROM movies;   
+   
+Case statements allow a lot of flexibility. They evaluate the first WHEN, and if it passes, it uses the THEN for the return value and skips to the next row.
+
+Else option and allows for a catch-all value like “No Information”
+The different 'whens' can be inspecting different values, and the CASE Statment can be used in the SELECT or the WHERE.  
+Let revisit the NULL query from earlier.
+
+SELECT *
+FROM movies
+WHERE CASE 
+        WHEN rating IS NULL THEN 1
+        WHEN rating = ''    THEN 1
+        WHEN release_year <= 2007 THEN 1
+      END = 1;

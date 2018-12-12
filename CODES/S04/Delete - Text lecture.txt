@@ -1,0 +1,15 @@
+Delete - Text lecture
+Section 4, Lecture 57
+Delete is just like Select but instead of returning rows with information, it removes them from the table. As a rule, always use a select statement to verify what you are about to remove.
+
+Example, remove all of the inactive accounts from our CustBal table:
+
+First, identify the inactive accounts:
+SELECT *
+FROM CustBal 
+WHERE ActiveStatus = 0;
+
+To delete, replace SELECT * with DELETE and execute;
+DELETE 
+FROM CustBal 
+WHERE ActiveStatus = 0;

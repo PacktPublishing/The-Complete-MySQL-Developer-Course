@@ -1,0 +1,16 @@
+Sign up for cloud based IDE - Text lecture
+Section 1, Lecture 6
+To create an account at cloud9, go to c9.io and sign-up for AWS account and then choose C9 from developer tools. However, if you want to use the interface used in the course which is the old c9 workspace (and skip AWS) then you can request access from me directly, details here: http://www.mashrurhossain.com/#inquire
+
+Select php, apache as your workspace type
+
+To install MySQL, type the following in your workspace directory and hit return -> mysql-ctl install
+To start the MySQL server, type the following and hit return -> mysql-ctl start
+To open a command line interface with direct access to your mysql database type in the following and hit return -> mysql-ctl cli
+
+To see the hostname, type in the following and hit return -> select @@hostname;
+**** Don't forget the semi-colon at the end! ****
+
+To show databases -> show databases;
+
+To exit the mysql cli -> exit

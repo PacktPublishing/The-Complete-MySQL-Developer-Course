@@ -1,0 +1,141 @@
+Login users - Text lecture
+Section 8, Lecture 117
+Now lets create a Login page Login.php
+
+<html>
+<head>
+<title>CRUD Login</title>
+</head>
+
+<body>
+  <h2>CRUD Login</h2>
+  <form action="LoginSubmit.php" method="post">
+  <fieldset>
+    <p>
+      <label>Username</label>
+      <input type="text" name="username" value="" maxlength="20" />
+    </p>
+    <p>
+      <label>Password</label>
+      <input type="password"  name="pwd" value="" maxlength="20" />
+    </p>
+    <p>
+      <input type="submit" value="Login" />
+    </p>
+  </fieldset>
+  </form>
+</body>
+</html>
+
+Create another file LoginSubmit.php
+<?php
+require_once('SQLFunctions.php');
+session_start();
+
+/* Check if the user is already logged in */
+if(isset( $_SESSION['user_id'] ))
+{
+    $message = 'User is already logged in';
+}
+/* Check that username and password are populated */
+if(!isset( $_POST['username'], $_POST['pwd']))
+{
+    $message = 'Please enter a valid username and password';
+}
+/* Check username length */
+elseif (strlen( $_POST['username']) > 20 || strlen($_POST['username']) < 4)
+{
+    $message = 'Incorrect Length for Username';
+}
+/* Check password length */
+elseif (strlen( $_POST['pwd']) > 20 || strlen($_POST['pwd']) < 4)
+{
+    $message = 'Incorrect Length for Password';
+}
+/* Check username for alpha numeric characters */
+elseif (ctype_alnum($_POST['username']) != true)
+{
+    $message = "Username must be alpha numeric";
+}
+/* Check password for alpha numeric characters */
+elseif (ctype_alnum($_POST['pwd']) != true)
+{
+        $message = "Password must be alpha numeric";
+}
+else
+{
+    /* Store username and pwds as variables*/
+    $username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
+    $pwd = filter_var($_POST['pwd'], FILTER_SANITIZE_STRING);
+
+    /* Encrypt password with sha1*/
+    $pwd = sha1( $pwd );
+    
+    try
+    {
+         /*Connect to CRUD Database  mysqli(Server,User,Password,Database)*/
+        $link = connectDB();
+
+        /* Prep SQL statement which will compare the user credentials with what is stored in the database*/
+        $sql = "SELECT User_ID FROM User_Dfn WHERE username = '".$username."' AND pwd = '".$pwd."'";
+        /*echo $sql."<br>";*/
+        
+        /*Run the query*/
+        if($result=mysqli_query($link,$sql)) 
+        {
+          /*assign the User_id from the database to the session user_id*/
+          while($row = mysqli_fetch_assoc($result)) {
+            $user_id = $row['User_ID'];
+            /*echo "<br>user_id=".$user_id;*/
+
+            /* Set the session user_id parameter */
+            $_SESSION['user_id'] = $user_id;
+            $_SESSION['timeout'] = time();
+            /*header("Location: ToDoApp.php"); UNCOMMENT this once tested there will be ins below*/
+            $message = 'You are now logged in';
+          }        
+        }
+          if($user_id == false)
+          {
+            $message = 'Login Failed';
+          }
+    }    
+    catch(Exception $e)
+    {
+        $message = 'Unable to process request';
+    }
+}
+?>
+
+<html>
+<head>
+<title>LoginSubmit</title>
+</head>
+<body>
+<p><?php echo $message; ?>
+</body>
+</html>
+
+Test this by attempting to log in intentionally fail the validations.
+Once tested, uncomment the header location row that forwards users to ToDoApp.php once they are logged in. Then you should be able to test logging in with correct credentials
+
+Now lets create a logout page Logout.php
+<?php
+session_start();
+
+// Unset all of the session variables.  
+session_unset();
+
+// Destroy the session.
+session_destroy();
+?>
+<html>
+  <head>
+    <title>Logged Out</title>
+  </head>
+  <body>
+    <h1>You are now logged out.</h1>
+  </body>
+</html>
+
+Test it out and ensure you have closed the session by logging out!

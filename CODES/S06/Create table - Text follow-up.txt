@@ -1,0 +1,19 @@
+Create table - Text follow-up
+Section 6, Lecture 88
+Create a database, use it and then create a table from mysql cli:
+
+1) CREATE DATABASE formcollector;
+
+2) use formcollector;
+
+3) CREATE TABLE OptIn ( OptInID INT NOT NULL AUTO_INCREMENT
+                    ,formID varchar(50) DEFAULT NULL
+                    ,NAME varchar(100) DEFAULT NULL 
+                    ,EMAIL varchar(100) DEFAULT NULL 
+                    ,ENTRY_TimeStamp datetime DEFAULT NULL
+                    ,SOURCE_IP char(15) DEFAULT NULL
+                    ,successredirecturl char(200) DEFAULT NULL
+                    ,rejectredirecturl char(200) DEFAULT NULL
+                    ,PRIMARY KEY (OptInID)); 
+
+Our PHP scripts will need to connect to the database, so the easiest way to maintain the connection information is using a config file. So create a config.php file for the application connection information under the formcollector folder

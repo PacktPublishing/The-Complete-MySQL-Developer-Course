@@ -1,0 +1,135 @@
+Add styling to form - Text follow-up
+Section 6, Lecture 86
+Add the following to OptIn.html directly under the TITLE tags
+
+ <link href="styles.css" rel="stylesheet" type="text/css"> 
+
+Something else we need to add to our HTML are div tags and classes. This is simply a way to connect the CSS styles to the HTML code. Div is simply a section to apply the settings corresponding to the class. Update the OptIn.HTML to the following
+
+<HTML>
+  <HEAD>
+    <TITLE>OptIns</TITLE>
+    <link href="styles.css" rel="stylesheet" type="text/css"> 
+  </HEAD> 
+  <BODY>
+    <div class="backgrounds">
+      <div class="main-content">
+        <h1>Sign Up</h1>
+        <form action="receiver.php" method = "POST">
+          <input type="hidden" name="formID" value="OptIn" />
+          <input type="hidden" name="successredirecturl" value="Success.html">
+          <input type="hidden" name="rejectredirecturl" value="Fail.html">
+          <p>First Name:  <input type="text" name="FNAME" maxlength='100'  required/></p>
+          <p>Last Name:  <input type="text" name="LNAME" maxlength='100'  required/></p>        
+          <p>Email: <input type="text" name="EMAIL" maxlength='100'  required/></p>
+          <input type="submit" class='button'>        
+        </form>
+      </div><!--main-content-->
+    </div><!--background--> 
+  </BODY>
+</HTML>
+
+Create a new file named styles.css to add the styling
+This file is where you specify colors, sizes, fonts and most things related to styling HTML.
+
+We are going to use this style sheet to set a background color, border, make the button look cool, etc.
+
+Check out this page to generate custom HTML and CSS code for buttons:
+http://livetools.uiparade.com/button-builder.html
+
+Here are the full contents of the CSS file: 
+*** Caution. Your browser sometimes stores a version of the CSS and reuses that instead of pulling in updates. You may have to clear your “Cached images and files” to see the changes.
+
+body
+{
+background-color:#000000;
+background-repeat:repeat-x;
+background-position:center top;
+}
+
+.backgrounds {
+  position: relative;
+  margin: auto;
+  border-style: solid;
+   border-color: red;
+   padding: 1% 1% 1% 1%; /*top right bottom left */
+  /*background-image:url(images/background.png); */
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-color: #4d4d4d;
+  max-width: 1345px;
+  background-position: top; 
+  vertical-align: text-top;   
+  height: auto;
+} 
+
+.main-content {
+   position:relative; 
+   border-style: solid;
+  border-color:red;
+  background-color:rgba(0, 0, 0, 0.8);
+  height: auto;
+  text-align: center;
+  color: #ffffff;
+  font-size: 150%;
+  padding: 5px 5px 5px 5px;
+}
+
+.button {
+   border: 1px solid #401818;
+   background: #9c3e3e;
+   background: -webkit-gradient(linear, left top, left bottom, from(#d66565), to(#9c3e3e));
+   background: -webkit-linear-gradient(top, #d66565, #9c3e3e);
+   background: -moz-linear-gradient(top, #d66565, #9c3e3e);
+   background: -ms-linear-gradient(top, #d66565, #9c3e3e);
+   background: -o-linear-gradient(top, #d66565, #9c3e3e);
+   background-image: -ms-linear-gradient(top, #d66565 0%, #9c3e3e 100%);
+   padding: 10px 20px;
+   -webkit-border-radius: 11px;
+   -moz-border-radius: 11px;
+   border-radius: 11px;
+   -webkit-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+   -moz-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+   box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+   text-shadow: #bd7f7f 0 1px 0;
+   color: #ffffff;
+   font-size: 17px;
+   font-family: helvetica, serif;
+   text-decoration: none;
+   vertical-align: middle;
+   }
+.button:hover {
+   border: 1px solid #401818;
+   text-shadow: #571e1e 0 1px 0;
+   background: #9c3e3e;
+   background: -webkit-gradient(linear, left top, left bottom, from(#d66565), to(#9c3e3e));
+   background: -webkit-linear-gradient(top, #d66565, #9c3e3e);
+   background: -moz-linear-gradient(top, #d66565, #9c3e3e);
+   background: -ms-linear-gradient(top, #d66565, #9c3e3e);
+   background: -o-linear-gradient(top, #d66565, #9c3e3e);
+   background-image: -ms-linear-gradient(top, #d66565 0%, #9c3e3e 100%);
+   color: #fff;
+   }
+.button:active {
+   text-shadow: #571e1e 0 1px 0;
+   border: 1px solid #401818;
+   background: #d66565;
+   background: -webkit-gradient(linear, left top, left bottom, from(#9c3e3e), to(#9c3e3e));
+   background: -webkit-linear-gradient(top, #9c3e3e, #d66565);
+   background: -moz-linear-gradient(top, #9c3e3e, #d66565);
+   background: -ms-linear-gradient(top, #9c3e3e, #d66565);
+   background: -o-linear-gradient(top, #9c3e3e, #d66565);
+   background-image: -ms-linear-gradient(top, #9c3e3e 0%, #d66565 100%);
+   color: #fff;
+   }
+
+Paste the code into styles.css, save it and close.
+
+Now test it by visiting the page!
+
+The plan now is to have the user fill out the form, then hit Submit. The HTML form will reach out to the receiver.php file with all the information from the form, with an IP, and what to do in the case of a success or failure.  If it’s successful, reciever.php will redirect the user to the success page, and if there is an issue, the user will be directed to the Fail.html page. 
+
+To create the success and fail pages:
+Right click on FormCollector folder and create both Success.html and Fail.html files.
+Inside Fail.html, simply type the word “Fail!”, then save, test it in browser and close
+Inside Success.html, type the word “Success!”, then save, test it in browser and close

@@ -1,0 +1,5 @@
+HTML and CSS - Text lecture
+Section 6, Lecture 82
+Use this link to learn/build a site using HTML/CSS -> http://learn.shayhowe.com/html-css/
+
+Assignment: Once complete you can either paste images of this completed site to the Q & A section, or you can create your own static site and post pictures of that. Good luck!

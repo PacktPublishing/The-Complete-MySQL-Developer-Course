@@ -1,0 +1,40 @@
+Subselects - Text lecture
+Section 5, Lecture 73
+SQL allows queries inside of other quiries which can be extermely useful. Take our example from the previous lecture. If we want to know how many movies each director directed, a subselect can easily do the job.
+
+SELECT A.FIRST_NAME
+      ,A.LAST_NAME
+      ,IFNULL(MIN(C.Release_Year),'N/A') AS FirstDirected
+      ,IFNULL(MAX(B.Release_Year),'N/A') AS LatestRelease
+      ,D.cnt AS MoviesDirected
+FROM people A
+     LEFT OUTER JOIN movies B
+      ON B.director = A.ActorID
+     LEFT OUTER JOIN movies C
+      ON C.director = B.director   
+     LEFT OUTER JOIN (SELECT Z.Director AS ActorID
+                            ,COUNT(Z.MovieID) AS cnt
+                      FROM movies Z
+                      GROUP BY Z.Director) D
+      ON D.ActorID = A.ActorID                      
+GROUP BY A.FIRST_NAME
+        ,A.LAST_NAME
+        ,D.cnt
+ORDER BY D.cnt DESC;
+
+While there are performance hits from subselects in the SELECT section, it also is an option:
+SELECT A.FIRST_NAME
+      ,A.LAST_NAME
+      ,IFNULL(MIN(C.Release_Year),'N/A') AS FirstDirected
+      ,IFNULL(MAX(B.Release_Year),'N/A') AS LatestRelease
+      ,(SELECT COUNT(Z.MovieID) 
+        FROM movies Z
+        WHERE Z.Director = A.ActorID) AS MoviesDirected
+FROM people A
+     LEFT OUTER JOIN movies B
+      ON B.director = A.ActorID
+     LEFT OUTER JOIN movies C
+      ON C.director = B.director   
+GROUP BY A.FIRST_NAME
+        ,A.LAST_NAME
+ORDER BY MoviesDirected DESC; 

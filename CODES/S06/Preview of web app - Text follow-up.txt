@@ -1,0 +1,7 @@
+Preview of web app - Text follow-up
+Section 6, Lecture 97
+Run the project go to OptIn page and try out some entries
+
+You may run into an error if the FNAME and LNAME fields aren't set up in your db. Your challenge is to drop the OptIn table and create a new one, with the update FNAME and LNAME in place of NAME. Then it should work, if not, check the syntax for errors in receiver.php and SQLFunctions.php and the naming. 
+
+You may also want to update SELECT * to SELECT COUNT(*) as count in the f_tableExists function of the SQLFunctions.php file

@@ -1,0 +1,58 @@
+Dates and times - Text lecture
+Section 3, Lecture 47
+Some time functions:
+
+SELECT NOW()
+      ,CURDATE()
+      ,CURTIME();
+
+More information on time functons: http://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html
+
+MySQL has prebuilt functions that offer some handy functionality when dealing with dates and times.
+
+NOW() returns the system date and time of the server  
+CURDATE() returns the system date without the time
+CURTIME() returns the system time without the date
+
+NOW() is useful for adding a timestamp when a row is being added to the database, but let’s use it to explore some other data functions 
+
+SELECT NOW()
+      ,CURDATE()
+      ,CURTIME()
+      ,YEAR(NOW())
+      ,YEAR(CURDATE());
+
+We can have just the year pulled out.  This function could easily be used to help group rows by years
+
+SELECT NOW()
+      ,MONTH(NOW())
+      ,MONTHNAME(Now());
+
+MySQL allows you to pull just the month by number or name
+
+SELECT NOW()
+      ,DAY(NOW())
+      ,DAYNAME(Now())
+      ,DAYOFMONTH(NOW())
+      ,DAYOFWEEK(NOW())
+      ,DAYOFYEAR(NOW());
+
+DAY gives the day of the month
+DAYNAME gives the name of the day of the week
+DAYOFMONTH is the same as DAY
+DAYOFWEEK gives the number corresponding to the day. Sunday is 1 and Saturday is 7
+DAYOFYEAR gives the day if we were counting from Jan 1st as 1, 
+
+You may have noticed that your cloud 9 Environment is not in your current timezone. Instead the System time is UTC. 
+Find your timezone here:
+https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+
+Then you can set your timezone:
+SET time_zone = '-7:00';
+SET GLOBAL time_zone = '-7:00';
+
+Then you can check the time difference:
+select @@global.time_zone, @@session.time_zone;
+
+You can then check your newly set time:
+select NOW();

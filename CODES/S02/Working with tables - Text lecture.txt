@@ -1,0 +1,48 @@
+Working with tables - Text lecture
+Section 2, Lecture 12
+- Tables are just like Excel Spreadsheets
+
+- Columns have headers and are for certain types of data like strings, dates, numbers etc.
+- Rows are the actual data which all fit inside the column data types.
+
+- Structure matters. Forgetting a comma or a line or a space can break things.
+
+To create a table called people (The capitalization of CREATE TABLE below is to separate out the sql code from the names of the tables, you can also just say create table, capitalization matters in column names):
+CREATE TABLE people ( PersonID int
+                     ,first_name varchar(100)
+                     ,last_name  varchar(100)
+);
+
+To show database in use, type in select database();
+show tables;
+
+CREATE TABLE people2 ( PersonID INT NOT NULL AUTO_INCREMENT
+                      ,FIRST_NAME VARCHAR(100) NULL
+                      ,LAST_NAME VARCHAR(100) NULL
+                      ,PRIMARY KEY (PersonID));
+
+Primary Key is a unique value that each row will have, auto_increment makes it easy by automatically assigning them
+
+If we want to remove a table, use DROP TABLE (or drop table)
+show tables;
+
+To add a column, first see the columns that are there by typing in -> show columns from people2;
+
+Notice there are 3 columns;
+
+To add a column called DOB:
+alter table people2 add column DOB date NULL;
+
+Similarly, to drop a column, type in:
+alter table people2 drop column DOB;   
+show columns from people2;
+
+To delete tables:
+drop table people;
+drop table people2;
+
+This will get rid of both tables
+
+Homework exercise: Create two tables - actors and movies
+actors will have columns ActorID (as primary key), first_name, last_name and specify primary key
+movies will have columns MovieID (as primary key), title, release_year, rating and specify primary key

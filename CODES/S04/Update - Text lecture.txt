@@ -1,0 +1,31 @@
+Update - Text lecture
+Section 4, Lecture 53
+In previous lectures we learned about select like below:
+
+SELECT title
+      ,release_year
+FROM movies
+WHERE release_year IS NULL;
+
+If we want to update or change the data, we use UPDATE instead of select:
+Use a select to find what to update
+SELECT *
+FROM movies
+WHERE Title = 'Fight Club'; 
+
+Then run an update on the same selection criteria:
+UPDATE movies
+SET ReleaseYear = 1999
+WHERE Title = 'Fight Club'; 
+
+We can update multiple rows and multiple columns at the same time:
+SELECT *
+FROM movies
+WHERE title IN ('DodgeBall: A True Underdog Story'
+               ,'Along Came Polly'
+               ,'Anchorman:The Legend of Ron Burgundy');   
+
+Rows matched:3 Changed:3
+If you run this again, it will say matched: 3, Changed: 0
+
+Use SELECT * to verify your WHERE before updating a table.

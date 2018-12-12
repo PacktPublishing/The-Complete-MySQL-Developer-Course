@@ -1,0 +1,21 @@
+Select - Text lecture
+Section 2, Lecture 16
+SELECT * FROM actors;
+
+SELECT * FROM movies;
+
+-> SELECT section lists the results to be returned.
+* Means everything
+From is where you list tables.
+We will add lots of extra details but the SELECT * FROM is the general structure of how we retrieve any and all data from the database.
+
+Listing the columns returns the same results as *
+SELECT ActorID
+      ,FIRST_NAME
+      ,LAST_NAME
+FROM actors; 
+  
+SELECT FIRST_NAME
+      ,LAST_NAME
+FROM actors;   
+Returns same number of rows, but only the columns that were requested (FIRST_NAME AND LAST_NAME)

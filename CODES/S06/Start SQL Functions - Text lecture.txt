@@ -1,0 +1,92 @@
+Start SQL Functions - Text lecture
+Section 6, Lecture 95
+Create another file named SQLFunctions.php
+
+Put the following in SQLFunctions.php
+<?php
+include('config.php');
+
+function f_sqlConnect() {
+  /*mysqli is a php function that requires the database hostname, database name, username and password in order to create a database connection*/
+  $link = new mysqli(DB_HOST, DB_USER, DB_PWD, DB_NAME);
+  if ($link->connect_error) {
+               /*if an error occurs while establishing the connection, stop processing and 
+               write out an error message*/
+    die("Connection failed: " . $link->connect_error);
+  } 
+  echo "<br>Connected successfully to the database<br><br>"; 
+
+/*return defines what gets sent back when the function completes.  In this case, a database connection variable named $link*/
+  return $link;
+}
+
+/*This function is to check if the IP identified is in the correct format and not in a non-routable range.*/
+function f_validIP($ip) {
+       /*!empty($ip) checks if $ip is populated*/
+       /*ip2long($ip) is a form of validation on the input*/
+  if (!empty($ip) && ip2long($ip)!=-1) {
+               /*Create an array of arrays standard non routable IPs so we can filter 
+               out IPs that aren’t useful*/
+    $reserved_ips = array (
+      array('0.0.0.0','2.255.255.255'),
+      array('10.0.0.0','10.255.255.255'),
+                 array('127.0.0.0','127.255.255.255'),
+                 array('169.254.0.0','169.254.255.255'),
+                 array('172.16.0.0','172.31.255.255'),
+                 array('192.0.2.0','192.0.2.255'),
+                 array('192.168.0.0','192.168.255.255'),
+                 array('255.255.255.0','255.255.255.255')
+    );
+               /*Compare the IP to each array and return a false if the IP is within any 
+               of the ranges*/
+    foreach ($reserved_ips as $r) {
+      $min = ip2long($r[0]);
+      $max = ip2long($r[1]);
+      if ((ip2long($ip) >= $min) && (ip2long($ip) <= $max)) return false;
+    }
+               /*if the ip is populated and isn’t in the non routable range, return true*/
+    return true; 
+  } else {
+      return false;     
+  }
+}
+/*This function attempts various methods to get a valid IP, checking each with the f_validIP function.  */
+function f_getIP() {
+  if (f_validIP($_SERVER["HTTP_CLIENT_IP"])) {
+    return $_SERVER["HTTP_CLIENT_IP"];
+  }
+  foreach (explode(",",$_SERVER["HTTP_X_FORWARDED_FOR"]) as $ip) {
+    if (f_validIP(trim($ip))) {
+      return $ip;
+      }
+    }
+  if (f_validIP($SERVER["HTTP_X_FORWARDED"])) {
+    return $_SERVER["HTTP_X_FORWARDED"];
+  } elseif (f_validIP($_SERVER["HTTP_FORWARDED_FOR"])) {
+    return $_SERVER["HTTP_FORWARDED_FOR"];
+  } elseif (f_validIP($_SERVER["HTTP_FORWARDED"])) {
+    return $_SERVER["HTTP_FORWARDED"];
+  } elseif (f_validIP($_SERVER["HTTP_X_FORWARDED"])) {
+    return $_SERVER["HTTP_X_FORWARDED"];
+  } else {
+    return $_SERVER["REMOTE_ADDR"];
+  }
+}
+
+/*Check if table exists mysqli_query is a standard php function that requires the following inputs:connection, query, and resultmode*/  
+/*with $database = false, we create a new variable named $database and set it to false*/
+function f_tableExists(mysqli $link, $tablename, $database = false) {
+  if(!$database) {
+    $res = mysqli_query($link, "SELECT DATABASE()");
+    $database = mysql_result($res, 0);
+  }
+  $res = mysqli_query($link," SELECT *
+                                    FROM information_schema.tables
+                                    WHERE table_schema = '$database'
+                                    AND table_name = '$tablename'"
+            );
+  echo '<br>Table Exist:'.($res->num_rows);
+  return $res->num_rows == 1;
+} 
+
+?>

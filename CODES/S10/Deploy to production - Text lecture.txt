@@ -1,0 +1,5 @@
+Deploy to production - Text lecture
+Section 10, Lecture 128
+You can find instructions to deploy your apps to production using eco web hosting below:
+
+https://docs.google.com/document/d/1ilAnWOcsqNKv8RYLTAWYXGulbp4zPgZT_xNCsrUJXjI/edit?usp=sharing

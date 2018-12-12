@@ -1,0 +1,30 @@
+Final Project Part 2 - Text solution
+Section 5, Lecture 79
+Challenge: Delete With Joins
+
+Objective: Delete all people from the people table that have never been a director.
+
+Step 1: Plan it out using a select Statement
+SELECT COUNT(*) FROM people; 
+SELECT COUNT(*)
+FROM people A
+WHERE NOT EXISTS (SELECT 1
+                  FROM movies Z
+                  WHERE Z.Director = A.ActorID);
+Sometimes it’s helpful to view what you are going to be deleting in terms of row count
+
+SELECT *
+FROM people A
+WHERE NOT EXISTS (SELECT 1
+                  FROM movies Z
+                  WHERE Z.Director = A.ActorID);   
+                 
+Step 2: Update the Select into a Delete and Execute
+DELETE
+FROM people 
+WHERE NOT EXISTS (SELECT 1
+                  FROM movies Z
+                  WHERE Z.Director = ActorID);  
+
+Step 3: Confirm your results
+SELECT * FROM people;

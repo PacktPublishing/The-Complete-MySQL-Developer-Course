@@ -1,0 +1,44 @@
+Create a Database/Schema - Text lecture
+Section 2, Lecture 9
+Database Server: Service running on a machine (server or desktop), it houses many databases.
+
+Database: Contains all of the persistent information for your applications
+
+Schema: In MySQL, this is synonymous with database and can be used interchangeably, but shouldn’t because SQL Server and Oracle treat them differently. 
+SQL Server/Oracle - Schema is a namespace inside the database with different permissions associated with it.
+
+To clear screen from mysql cli -> \! clear
+
+Open MySQL ->
+Type : mysql-ctl cli
+
+Some commands ->
+
+show databases;
+
+show schemas;
+
+SQL statements end with “;”
+If you don’t put the “;”, MySQL will wait to execute until you ad it in.
+
+To create a new database ->
+create database project1;
+
+MySQL is case sensitive.
+Don’t put spaces in the database name.  While possible, it will just cause issues later..  Spaces generally cause annoyances in names of databases, tables, columns and everything.
+
+create schema project1; this statement would accomplish the same thing as the command above to create database
+
+Create another database ->
+create database mashrur1;
+
+show databases;
+
+To delete (or drop) the database mashrur1 (warning: this will immediately delete it) ->
+drop database mashrur1;
+
+To use a specific database for queries we'll be running and impacting (let's say we want this to be project1):
+use project1;
+
+Now when we create and do things like create objects or call objects, database “project1” is assumed.
+Note: up arrow recalls previous commands.

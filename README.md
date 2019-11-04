@@ -1,5 +1,3 @@
-# The-Complete-MySQL-Developer-Course
-Code repository for The Complete MySQL Developer Course, Published by Packt
 # The Complete MySQL Developer Course
 This is the code repository for [The Complete MySQL Developer Course](https://www.packtpub.com/application-development/unsupervised-clustering-mesos-integrated-course?utm_source=github&utm_medium=repository&utm_campaign=9781788479677), published by [Packt](https://www.packtpub.com/?utm_source=github). It contains all the supporting project files necessary to work through the video course from start to finish.
 ## About the Video Course
